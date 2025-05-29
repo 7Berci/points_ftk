@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "842557104070",
+    "project_id": "points-ftk",
+    "storage_bucket": "points-ftk.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:842557104070:android:0d007c7a5bfd234213dcc7",
+        "android_client_info": {
+          "package_name": "com.example.points_ftk"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCvDdkEw07faIC97CQWs3GtFM6pblIaiGY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
