@@ -280,44 +280,47 @@ class ArchivesPressingScreenView extends State<ArchivesPressingScreen> {
 
                   return Expanded(
                     child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Column(
-                        children: [
-                          DataTable(
-                            columns: const [
-                              DataColumn(label: Text('Jour')),
-                              DataColumn(label: Text('Entrées')),
-                              DataColumn(label: Text('Sorties')),
-                              DataColumn(label: Text('Report à nouveau')),
-                            ],
-                            rows: joursList.map((jour) {
-                              double entreeJour = entrees
-                                  .where((e) {
-                                    final date = (e['timestamp'] as Timestamp).toDate();
-                                    return "${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}" == jour;
-                                  })
-                                  .fold(0.0, (sum, e) => sum + (double.tryParse(e['montant'].toString()) ?? 0));
-                              double sortieJour = sorties
-                                  .where((s) {
-                                    final date = (s['timestamp'] as Timestamp).toDate();
-                                    return "${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}" == jour;
-                                  })
-                                  .fold(0.0, (sum, s) => sum + (double.tryParse(s['montant'].toString()) ?? 0));
-                              double reportJour = reportParJour[jour]!;
-                              return DataRow(cells: [
-                                DataCell(Text(jour)),
-                                DataCell(Text(entreeJour.toStringAsFixed(2))),
-                                DataCell(Text(sortieJour.toStringAsFixed(2))),
-                                DataCell(Text(reportJour.toStringAsFixed(2))),
-                              ]);
-                            }).toList(),
-                          ),
-                         ElevatedButton.icon(
-                            icon: Icon(Icons.picture_as_pdf),
-                            label: Text('Exporter PDF'),
-                            onPressed: exportToPdf, // Your function
-                          ),
-                        ],
+                      scrollDirection: Axis.vertical,
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Column(
+                          children: [
+                            DataTable(
+                              columns: const [
+                                DataColumn(label: Text('Jour')),
+                                DataColumn(label: Text('Entrées')),
+                                DataColumn(label: Text('Sorties')),
+                                DataColumn(label: Text('Report à nouveau')),
+                              ],
+                              rows: joursList.map((jour) {
+                                double entreeJour = entrees
+                                    .where((e) {
+                                      final date = (e['timestamp'] as Timestamp).toDate();
+                                      return "${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}" == jour;
+                                    })
+                                    .fold(0.0, (sum, e) => sum + (double.tryParse(e['montant'].toString()) ?? 0));
+                                double sortieJour = sorties
+                                    .where((s) {
+                                      final date = (s['timestamp'] as Timestamp).toDate();
+                                      return "${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}" == jour;
+                                    })
+                                    .fold(0.0, (sum, s) => sum + (double.tryParse(s['montant'].toString()) ?? 0));
+                                double reportJour = reportParJour[jour]!;
+                                return DataRow(cells: [
+                                  DataCell(Text(jour)),
+                                  DataCell(Text(entreeJour.toStringAsFixed(2))),
+                                  DataCell(Text(sortieJour.toStringAsFixed(2))),
+                                  DataCell(Text(reportJour.toStringAsFixed(2))),
+                                ]);
+                              }).toList(),
+                            ),
+                           ElevatedButton.icon(
+                              icon: Icon(Icons.picture_as_pdf),
+                              label: Text('Exporter PDF'),
+                              onPressed: exportToPdf, // Your function
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   );
