@@ -118,39 +118,42 @@ class DailyPressingArchivesScreenView extends State<DailyPressingArchivesScreen>
                       children: [
                         Expanded(
                           child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: DataTable(
-                              columns: const [
-                                DataColumn(label: Text('Jour')),
-                                DataColumn(label: Text('Entrées')),
-                                DataColumn(label: Text('Sorties')),
-                                DataColumn(label: Text('Report à nouveau')),
-                              ],
-                              rows: joursList.map((jour) {
-                                final parts = jour.split('-');
-                                final date = DateTime(int.parse(parts[0]), int.parse(parts[1]), int.parse(parts[2]));
-                                final moisNom = moisLettre[date.month];
-
-                                double entreeJour = entrees
-                                    .where((e) {
-                                      final d = (e['timestamp'] as Timestamp).toDate();
-                                      return "${d.year}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')}" == jour;
-                                    })
-                                    .fold(0.0, (sum, e) => sum + (double.tryParse(e['montant'].toString()) ?? 0));
-                                double sortieJour = sorties
-                                    .where((s) {
-                                      final d = (s['timestamp'] as Timestamp).toDate();
-                                      return "${d.year}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')}" == jour;
-                                    })
-                                    .fold(0.0, (sum, s) => sum + (double.tryParse(s['montant'].toString()) ?? 0));
-                                double reportJour = reportParJour[jour]!;
-                                return DataRow(cells: [
-                                  DataCell(Text("${date.day} $moisNom ${date.year}")),
-                                  DataCell(Text(entreeJour.toStringAsFixed(2))),
-                                  DataCell(Text(sortieJour.toStringAsFixed(2))),
-                                  DataCell(Text(reportJour.toStringAsFixed(2))),
-                                ]);
-                              }).toList(),
+                            scrollDirection: Axis.vertical,
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: DataTable(
+                                columns: const [
+                                  DataColumn(label: Text('Jour')),
+                                  DataColumn(label: Text('Entrées')),
+                                  DataColumn(label: Text('Sorties')),
+                                  DataColumn(label: Text('Report à nouveau')),
+                                ],
+                                rows: joursList.map((jour) {
+                                  final parts = jour.split('-');
+                                  final date = DateTime(int.parse(parts[0]), int.parse(parts[1]), int.parse(parts[2]));
+                                  final moisNom = moisLettre[date.month];
+                            
+                                  double entreeJour = entrees
+                                      .where((e) {
+                                        final d = (e['timestamp'] as Timestamp).toDate();
+                                        return "${d.year}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')}" == jour;
+                                      })
+                                      .fold(0.0, (sum, e) => sum + (double.tryParse(e['montant'].toString()) ?? 0));
+                                  double sortieJour = sorties
+                                      .where((s) {
+                                        final d = (s['timestamp'] as Timestamp).toDate();
+                                        return "${d.year}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')}" == jour;
+                                      })
+                                      .fold(0.0, (sum, s) => sum + (double.tryParse(s['montant'].toString()) ?? 0));
+                                  double reportJour = reportParJour[jour]!;
+                                  return DataRow(cells: [
+                                    DataCell(Text("${date.day} $moisNom ${date.year}")),
+                                    DataCell(Text(entreeJour.toStringAsFixed(2))),
+                                    DataCell(Text(sortieJour.toStringAsFixed(2))),
+                                    DataCell(Text(reportJour.toStringAsFixed(2))),
+                                  ]);
+                                }).toList(),
+                              ),
                             ),
                           ),
                         ),
