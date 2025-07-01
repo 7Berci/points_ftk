@@ -8,11 +8,11 @@ import 'package:points_ftk/themes.dart';
 
 //le void main
 Future<void> main() async {
-  //WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
 
   //try {
       await Firebase.initializeApp(
-        //name: "points-ftk",
+        name: "points-ftk",
         options: const FirebaseOptions(
           apiKey: "AIzaSyCvDdkEw07faIC97CQWs3GtFM6pblIaiGY",
           authDomain: "points-ftk.firebaseapp.com",
