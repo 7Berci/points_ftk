@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:points_ftk/main_menu/daily_pressing_screen.dart';
 import 'package:points_ftk/main_menu/archives_print_screen.dart';
+import 'package:points_ftk/main_menu/the_navigation_drawer.dart';
 
 class DailyPrintArchivesScreen extends StatefulWidget {
   const DailyPrintArchivesScreen({super.key});
@@ -195,15 +196,21 @@ class DailyPrintArchivesScreenView extends State<DailyPrintArchivesScreen> {
                                       double reportJour = reportParJour[jour]!;
                                       return DataRow(cells: [
                                         DataCell(
-                                          InkWell(
+                                          user?.email == 'eliel08@hotmail.fr' 
+                                          ? InkWell(
                                             onTap: () => toggleCollectedStatus(index, jour),
                                             child: Icon(
                                             collectedStates[index] ? FontAwesome.check_square : FontAwesome.square_o,
                                             color: collectedStates[index] ? Colors.green : Colors.grey,
                                             size: 32,
                                           ),
-                                          ),        
-                                          ),
+                                          )
+                                          : Icon(
+                                            collectedStates[index] ? FontAwesome.check_square : FontAwesome.square_o,
+                                            color: collectedStates[index] ? Colors.green : Colors.grey,
+                                            size: 32,
+                                          ),    
+                                        ),
                                         DataCell(Text(jour)),
                                         DataCell(Text(entreeJour.toStringAsFixed(2))),
                                         DataCell(Text(sortieJour.toStringAsFixed(2))),
