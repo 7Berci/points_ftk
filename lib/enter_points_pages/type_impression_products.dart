@@ -11,7 +11,8 @@ final userr = FirebaseAuth.instance.currentUser!;
 
 class TypePrintingSpace extends StatefulWidget {
    const TypePrintingSpace({super.key});
-@override
+  
+  @override
   State<TypePrintingSpace> createState() => _TypePrintingSpaceState();
 }
 

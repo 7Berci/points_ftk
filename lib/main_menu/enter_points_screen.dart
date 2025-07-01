@@ -59,70 +59,92 @@ class TypingSections extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            GestureDetector(
-              onTap: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (builder) => const TypePrint()));
-              },
-              child: Row(children: [
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Text(
-                    'Impression',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 31.0,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => const TypePressing()),
+                  );
+                },
+                child: Card(
+                  elevation: 4,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Container(
+                    width: 130,
+                    height: 130,
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(
+                          Icons.local_laundry_service, // icône de santé / pression
+                          size: 50,
+                          color: Colors.blue,
+                        ),
+                        SizedBox(height: 10),
+                        Text(
+                          'PRESSING',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black87,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
-                const Spacer(),
-                IconButton(
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (builder) => const TypePrint()));
-                  },
-                  icon: const Icon(Icons.add_box_rounded),
-                )
-              ]),
-            ),
-            const Divider(),
-            SizedBox(height: 87.0),
-            GestureDetector(
-              onTap: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (builder) => const TypePressing()));
-              },
-              child: Row(children: [
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Text(
-                    'Pressing',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 31.0,
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => const TypePrint()),
+                  );
+                },
+                child: Card(
+                  elevation: 4,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Container(
+                    width: 130,
+                    height: 130,
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(
+                          Icons.description, // icône de balance
+                          size: 50,
+                          color: Colors.blue,
+                        ),
+                        SizedBox(height: 10),
+                        Text(
+                          'IMPRESSION',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black87,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
-                const Spacer(),
-                IconButton(
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (builder) => const TypePressing()));
-                  },
-                  icon: const Icon(Icons.add_box_rounded),
-                )
-              ]),
-            ),
-            const Divider(),
-            const SizedBox(height: 30.0),
-          ],
-        ),
+              ),
+            ],
+          ),
+
+        ],
       ),
     );
   }

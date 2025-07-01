@@ -1,10 +1,10 @@
-
-
-
 import 'package:flutter/material.dart';
 import 'package:points_ftk/auth_folder/auth_page.dart';
 import 'package:points_ftk/auth_folder/function.dart';
 import 'package:points_ftk/main_menu/main_menu.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+final user = FirebaseAuth.instance.currentUser;
 
 class MyNavigationDrawer extends StatelessWidget {
   const MyNavigationDrawer({super.key});
@@ -35,6 +35,12 @@ class MyNavigationDrawer extends StatelessWidget {
                   radius: 52,
                   child: Image.asset('assets/images/profile.png'),
                 ),
+                Text('${user?.email }', 
+                    style: const TextStyle(
+                      fontSize: 20,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    )),
               ],
             ),
           ),
