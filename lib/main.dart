@@ -10,7 +10,7 @@ import 'package:points_ftk/themes.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  //try {
+  try {
       await Firebase.initializeApp(
         name: "points-ftk",
         options: const FirebaseOptions(
@@ -22,16 +22,10 @@ Future<void> main() async {
           projectId: "points-ftk",
         ),
       );
-  // } catch (e) {
-  //   print("Erreur d'initialisation Firebase: $e");
-  //   // Vous pourriez vouloir exécuter une version sans Firebase en cas d'échec
-  //   // runApp(MyAppWithoutFirebase());
-  // }
-
-
+  } catch (e) {
+    print("Erreur d'initialisation Firebase: $e");
+  }
     //configLoading();
-    
-    //await Firebase.initializeApp();
     runApp(MyApp());
 }
 
