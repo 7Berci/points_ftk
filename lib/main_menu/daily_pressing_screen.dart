@@ -4,11 +4,11 @@ import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:points_ftk/main_menu/archives_pressing_screen.dart';
 import 'package:points_ftk/main_menu/the_navigation_drawer.dart';
 
-class DailyPressingArchivesScreen extends StatefulWidget {
-  const DailyPressingArchivesScreen({super.key});
+class DailyPressingScreen extends StatefulWidget {
+  const DailyPressingScreen({super.key});
 
   @override
-  DailyPressingArchivesScreenView createState() => DailyPressingArchivesScreenView();
+  DailyPressingScreenView createState() => DailyPressingScreenView();
 }
 
 const List<String> moisLettre = [
@@ -27,7 +27,7 @@ const List<String> moisLettre = [
   'Décembre',
 ];
 
-class DailyPressingArchivesScreenView extends State<DailyPressingArchivesScreen> {
+class DailyPressingScreenView extends State<DailyPressingScreen> {
   List<Map<String, dynamic>> points = [];
   bool isLoading = true;
 late DateTime date;

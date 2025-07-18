@@ -3,6 +3,8 @@ import 'package:points_ftk/enter_points_pages/type_pressing_screen.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
+import 'package:points_ftk/enter_points_pages/type_transfert_screen.dart';
+
 class EnterScreen extends StatefulWidget {
   const EnterScreen({super.key});
 
@@ -143,7 +145,46 @@ class TypingSections extends StatelessWidget {
               ),
             ],
           ),
-
+          const SizedBox(height: 60),
+          Center(
+            child: GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => const TypeTransfert()),
+                    );
+                  },
+                  child: Card(
+                    elevation: 4,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Container(
+                      width: 130,
+                      height: 130,
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Icon(
+                            Icons.currency_exchange, // icône de balance
+                            size: 50,
+                            color: Colors.blue,
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            'TRANSFERT',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black87,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+          ),
         ],
       ),
     );

@@ -5,14 +5,14 @@ import 'package:points_ftk/main_menu/daily_pressing_screen.dart';
 import 'package:points_ftk/main_menu/archives_print_screen.dart';
 import 'package:points_ftk/main_menu/the_navigation_drawer.dart';
 
-class DailyPrintArchivesScreen extends StatefulWidget {
-  const DailyPrintArchivesScreen({super.key});
+class DailyPrintScreen extends StatefulWidget {
+  const DailyPrintScreen({super.key});
 
   @override
-  DailyPrintArchivesScreenView createState() => DailyPrintArchivesScreenView();
+  DailyPrintScreenView createState() => DailyPrintScreenView();
 }
 
-class DailyPrintArchivesScreenView extends State<DailyPrintArchivesScreen> {
+class DailyPrintScreenView extends State<DailyPrintScreen> {
    List<Map<String, dynamic>> points = [];
   bool isLoading = true;
   late DateTime date;

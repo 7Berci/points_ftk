@@ -1,5 +1,6 @@
 import 'package:points_ftk/main_menu/daily_pressing_screen.dart';
 import 'package:points_ftk/main_menu/daily_print_screen.dart';
+import 'package:points_ftk/main_menu/daily_transfert_screen.dart';
 import 'package:points_ftk/main_menu/enter_points_screen.dart';
 import 'dart:async';
 import 'package:points_ftk/main_menu/the_navigation_drawer.dart';
@@ -22,8 +23,9 @@ class MainMenuView extends State<MainMenu> {
 
   final screens = const [
     EnterScreen(),
-    DailyPressingArchivesScreen(),
-    DailyPrintArchivesScreen(),
+    DailyPressingScreen(),
+    DailyPrintScreen(),
+    DailyTransfertScreen(),
   ];
 
   late DateTime now;
@@ -97,6 +99,10 @@ class MainMenuView extends State<MainMenu> {
             NavigationDestination(
               icon: Icon(Icons.description),
               label: 'Points impression',
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.transfer_within_a_station),
+              label: 'Points transfert',
             ),
           ],
         ),

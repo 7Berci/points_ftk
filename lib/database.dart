@@ -53,3 +53,31 @@ class DatabaseService {
       'observation': observation,
     });
   }
+
+  @override
+  Future<void> saveTransfertPoint({
+    required String soldeMTN,
+    required String commissionMTN,
+    required String soldeMoov,
+    required String commissionMoov,
+    required String soldeOrange,
+    required String commissionOrange,
+    required String montantSortie,
+    required String soldeCaisse,
+    required String observation,
+    // Add other fields as needed
+  }) async {
+    await FirebaseFirestore.instance.collection('points_transfert').add({
+      'uid': userr.uid,
+      'timestamp': FieldValue.serverTimestamp(),
+      'soldeMTN':soldeMTN,
+      'commissionMTN':commissionMTN,
+      'soldeMoov':soldeMoov,
+      'commissionMoov':commissionMoov,
+      'soldeOrange':soldeOrange,
+      'commissionOrange':commissionOrange,
+      'montantSortie':montantSortie,
+      'soldeCaisse':soldeCaisse,
+      'observation': observation,
+    });
+  }
