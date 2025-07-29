@@ -12,7 +12,7 @@ Future<void> main() async {
 
   try {
       await Firebase.initializeApp(
-        name: "points-ftk",
+        //name: "points-ftk",
         options: const FirebaseOptions(
           apiKey: "AIzaSyCvDdkEw07faIC97CQWs3GtFM6pblIaiGY",
           authDomain: "points-ftk.firebaseapp.com",

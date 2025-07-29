@@ -166,8 +166,8 @@ class ArchivesPrintScreenView extends State<ArchivesPrintScreen> {
                 future: getReportAnterieur(selectedYear!, selectedMonth!),
                 builder: (context, snapshot) {
                   double report = snapshot.data ?? 0;
-                  double totalEntrees = 0;
-                  double totalSorties = 0;
+                  // double totalEntrees = 0;
+                  // double totalSorties = 0;
                   Map<String, double> reportParJour = {};
 
                   for (var jour in joursList) {
@@ -185,8 +185,8 @@ class ArchivesPrintScreenView extends State<ArchivesPrintScreen> {
                         .fold(0.0, (sum, s) => sum + (double.tryParse(s['montant'].toString()) ?? 0));
                     report += (entreeJour - sortieJour);
                     reportParJour[jour] = report;
-                    totalEntrees += entreeJour;
-                    totalSorties += sortieJour;
+                    // totalEntrees += entreeJour;
+                    // totalSorties += sortieJour;
                   }
 
                   Future<void> exportToPdf() async {
