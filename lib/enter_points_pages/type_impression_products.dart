@@ -27,7 +27,7 @@ class TypePrintingSpace extends StatefulWidget {
     }
     else {
       return 
-        const Text("Yannick Sib",
+        const Text("FTK Account",
           style: TextStyle(
                     fontSize: 16.5,
                   ),);
@@ -85,7 +85,9 @@ class _TypePrintingSpaceState extends State<TypePrintingSpace> {
       );
       // ignore: avoid_print
       print('EasyLoading show');
-      await savePrintPoint(
+      await savePrintandPressingPoint(
+      collectionName: 'points_impression',
+      userEmail: userr.email!,
       montant: amountController.text,
       observation: observationController.text,
       type: typePoint,

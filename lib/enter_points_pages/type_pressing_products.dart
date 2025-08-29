@@ -65,7 +65,9 @@ class _TypePressingSpaceState extends State<TypePressingSpace> {
       );
       // ignore: avoid_print
       print('EasyLoading show');
-      await savePressingPoint(
+      await savePrintandPressingPoint(
+      collectionName: 'points_pressing',
+      userEmail: userr.email!,
       montant: amountController.text,
       observation: observationController.text,
       type: typePoint,

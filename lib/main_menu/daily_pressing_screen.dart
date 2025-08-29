@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:points_ftk/main_menu/archives_pressing_screen.dart';
 import 'package:points_ftk/main_menu/the_navigation_drawer.dart';
+import 'package:intl/intl.dart';
 
 class DailyPressingScreen extends StatefulWidget {
   const DailyPressingScreen({super.key});
@@ -67,6 +69,237 @@ late DateTime date;
     });
   }
 
+
+  
+// Fonction pour récupérer les détails d'un jour spécifique
+  Future<List<Map<String, dynamic>>> fetchDayDetails(String dateStr) async {
+    final parts = dateStr.split('-');
+    final day = int.parse(parts[2]);
+    final month = int.parse(parts[1]);
+    final year = int.parse(parts[0]);
+    
+    final startOfDay = DateTime(year, month, day);
+    final endOfDay = DateTime(year, month, day, 23, 59, 59);
+
+    final snapshot = await FirebaseFirestore.instance
+        .collection('points_pressing')
+        .where('timestamp', isGreaterThanOrEqualTo: Timestamp.fromDate(startOfDay))
+        .where('timestamp', isLessThan: Timestamp.fromDate(endOfDay))
+        .orderBy('timestamp')
+        .get();
+
+    return snapshot.docs.map((doc) {
+      final data = doc.data();
+      return {
+        ...data,
+        'id': doc.id,
+        'timestamp': data['timestamp'],
+      };
+    }).toList();
+  }
+
+
+  // Fonction pour mettre à jour un document
+  Future<void> updateDocument(String documentId, Map<String, dynamic> newData) async {
+    await FirebaseFirestore.instance
+        .collection('points_pressing')
+        .doc(documentId)
+        .update(newData);
+  }
+
+  // Fonction pour supprimer un document
+  Future<void> deleteDocument(String documentId) async {
+    await FirebaseFirestore.instance
+        .collection('points_pressing')
+        .doc(documentId)
+        .delete();
+  }
+
+
+
+ // Fonction pour afficher les détails du jour
+  void showDayDetails(BuildContext context, String dateStr) async {
+    final details = await fetchDayDetails(dateStr);
+    final date = DateTime.parse(dateStr);
+    final user = FirebaseAuth.instance.currentUser;
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Détails du ${date.day}/${date.month}/${date.year}'),
+        content: SizedBox(
+          width: double.maxFinite,
+          child: ListView(
+            shrinkWrap: true,
+            children: [
+              ...details.map((entry) {
+                final timestamp = (entry['timestamp'] as Timestamp).toDate();
+                return 
+                user?.email == 'eliel08@hotmail.fr' 
+                  ? DocumentTile(
+                    entry: entry,
+                    onEdit: () => _showEditDialog(context, entry),
+                    onDelete: () => _showDeleteDialog(context, entry, dateStr),
+                    )
+                  : ListTile(
+                  title: Text('${entry['type']}: ${entry['montant']}'),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Heure: ${timestamp.hour}:${timestamp.minute.toString().padLeft(2, '0')}'),
+                      if (entry['observation'] != null && entry['observation'].isNotEmpty)
+                        Text('Observations: ${entry['observation']}'),
+                      Text('Par: ${entry['userEmail'] ?? 'Non enregistré'}'),
+                    ],
+                  ),
+                  trailing: Text(entry['Collected'] == true ? '✓' : ''),
+                );
+              }),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Fermer'),
+          ),
+        ],
+      ),
+    );
+  }
+
+
+  
+// Fonction pour afficher la boîte de dialogue d'édition
+  void _showEditDialog(BuildContext context, Map<String, dynamic> entry) {
+    final timestamp = (entry['timestamp'] as Timestamp).toDate();
+    final montantController = TextEditingController(text: entry['montant'].toString());
+    final observationsController = TextEditingController(text: entry['observation'] ?? '');
+    DateTime selectedDate = timestamp;
+    TimeOfDay selectedTime = TimeOfDay.fromDateTime(timestamp);
+
+    showDialog(
+      context: context,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setState) {
+          return AlertDialog(
+            title: const Text('Modifier le point'),
+            content: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ListTile(
+                    title: Text('Date: ${DateFormat('dd/MM/yyyy').format(selectedDate)}'),
+                    trailing: const Icon(Icons.calendar_today),
+                    onTap: () async {
+                      final DateTime? picked = await showDatePicker(
+                        context: context,
+                        initialDate: selectedDate,
+                        firstDate: DateTime(2000),
+                        lastDate: DateTime(2100),
+                      );
+                      if (picked != null && picked != selectedDate) {
+                        setState(() {
+                          selectedDate = picked;
+                        });
+                      }
+                    },
+                  ),
+                  ListTile(
+                    title: Text('Heure: ${selectedTime.format(context)}'),
+                    trailing: const Icon(Icons.access_time),
+                    onTap: () async {
+                      final TimeOfDay? picked = await showTimePicker(
+                        context: context,
+                        initialTime: selectedTime,
+                      );
+                      if (picked != null && picked != selectedTime) {
+                        setState(() {
+                          selectedTime = picked;
+                        });
+                      }
+                    },
+                  ),
+                  TextField(
+                    controller: montantController,
+                    decoration: const InputDecoration(labelText: 'Montant'),
+                    keyboardType: TextInputType.number,
+                  ),
+                  TextField(
+                    controller: observationsController,
+                    decoration: const InputDecoration(labelText: 'Observations'),
+                    maxLines: 3,
+                  ),
+                ],
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Annuler'),
+              ),
+              ElevatedButton(
+                onPressed: () async {
+                  final newDateTime = DateTime(
+                    selectedDate.year,
+                    selectedDate.month,
+                    selectedDate.day,
+                    selectedTime.hour,
+                    selectedTime.minute,
+                  );
+                  
+                  await updateDocument(entry['id'], {
+                    'timestamp': Timestamp.fromDate(newDateTime),
+                    'montant': double.parse(montantController.text),
+                    'observations': observationsController.text,
+                  });
+                  
+                  Navigator.pop(context); // Fermer la boîte d'édition
+                  Navigator.pop(context); // Fermer la boîte de détails
+                  
+                  // Rafraîchir les données
+                  final updatedDetails = await fetchDayDetails(DateFormat('yyyy-MM-dd').format(selectedDate));
+                  showDayDetails(context, DateFormat('yyyy-MM-dd').format(selectedDate));
+                },
+                child: const Text('Enregistrer'),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+
+  // Fonction pour afficher la boîte de dialogue de suppression
+  void _showDeleteDialog(BuildContext context, Map<String, dynamic> entry, String dateStr) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Confirmer la suppression'),
+        content: Text('Êtes-vous sûr de vouloir supprimer cette ${entry['type']} de ${entry['montant']}?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Annuler'),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              await deleteDocument(entry['id']);
+              Navigator.pop(context); // Fermer la boîte de confirmation
+              Navigator.pop(context); // Fermer la boîte de détails
+              
+              // Rafraîchir les données
+              showDayDetails(context, dateStr);
+            },
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+            child: const Text('Supprimer'),
+          ),
+        ],
+      ),
+    );
+  }
+
+
   Future<void> toggleCollectedStatus(int index, String dateStr) async {
     final newStatus = !collectedStates[index];
     setState(() {
@@ -91,7 +324,7 @@ late DateTime date;
 
     final batch = FirebaseFirestore.instance.batch();
     for (final doc in querySnapshot.docs) {
-      batch.update(doc.reference, {'collected': newStatus});
+      batch.update(doc.reference, {'Collected': newStatus});
     }
 
     await batch.commit();
@@ -209,7 +442,16 @@ late DateTime date;
                                             })
                                             .fold(0.0, (sum, s) => sum + (double.tryParse(s['montant'].toString()) ?? 0));
                                         double reportJour = reportParJour[jour]!;
-                                        return DataRow(cells: [
+                                        return DataRow(
+                                                                                    
+                                          
+                                            // Ajout du GestureDetector ici
+                                          onSelectChanged: (_) {
+                                            showDayDetails(context, jour);
+                                          },
+
+                                          
+                                          cells: [
                                           DataCell(
                                             user?.email == 'eliel08@hotmail.fr' 
                                             ? InkWell(
@@ -294,5 +536,50 @@ late DateTime date;
       }
     }
     return report;
+  }
+}
+
+class DocumentTile extends StatelessWidget {
+  final Map<String, dynamic> entry;
+  final VoidCallback onEdit;
+  final VoidCallback onDelete;
+
+  const DocumentTile({
+    super.key,
+    required this.entry,
+    required this.onEdit,
+    required this.onDelete,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final timestamp = (entry['timestamp'] as Timestamp).toDate();
+    
+    return ListTile(
+      leading: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          IconButton(
+            icon: const Icon(Icons.edit, color: Colors.blue),
+            onPressed: onEdit,
+          ),
+          IconButton(
+            icon: const Icon(Icons.delete, color: Colors.red),
+            onPressed: onDelete,
+          ),
+        ],
+      ),
+      title: Text('${entry['type']}: ${entry['montant']}'),
+      subtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('Heure: ${DateFormat('HH:mm').format(timestamp)}'),
+          if (entry['observation'] != null && entry['observation'].isNotEmpty)
+            Text('Observation: ${entry['observation']}'),
+          Text('Par: ${entry['userEmail'] ?? 'Pas enregistré'}'),
+        ],
+      ),
+      trailing: Text(entry['Collected'] == true ? '✓' : ''),
+    );
   }
 }

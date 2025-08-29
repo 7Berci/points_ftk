@@ -23,36 +23,39 @@ class DatabaseService {
 }
 
 @override
-  Future<void> savePrintPoint({
+  Future<void> savePrintandPressingPoint({
+    required String collectionName,
+    required String userEmail,
     required String montant,
     required String observation,
     required String type,
     // Add other fields as needed
   }) async {
-    await FirebaseFirestore.instance.collection('points_impression').add({
+    await FirebaseFirestore.instance.collection(collectionName).add({
       'uid': userr.uid,
       'timestamp': FieldValue.serverTimestamp(),
       'type': type,
+      'userEmail': userEmail,
       'montant': montant,
       'observation': observation,
     });
   }
 
-  @override
-  Future<void> savePressingPoint({
-    required String montant,
-    required String observation,
-    required String type,
-    // Add other fields as needed
-  }) async {
-    await FirebaseFirestore.instance.collection('points_pressing').add({
-      'uid': userr.uid,
-      'timestamp': FieldValue.serverTimestamp(),
-      'type': type,
-      'montant': montant,
-      'observation': observation,
-    });
-  }
+  // @override
+  // Future<void> savePressingPoint({
+  //   required String montant,
+  //   required String observation,
+  //   required String type,
+  //   // Add other fields as needed
+  // }) async {
+  //   await FirebaseFirestore.instance.collection('points_pressing').add({
+  //     'uid': userr.uid,
+  //     'timestamp': FieldValue.serverTimestamp(),
+  //     'type': type,
+  //     'montant': montant,
+  //     'observation': observation,
+  //   });
+  // }
 
   @override
   Future<void> saveTransfertPoint({
