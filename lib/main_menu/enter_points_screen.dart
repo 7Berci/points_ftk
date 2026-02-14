@@ -1,6 +1,7 @@
 import 'package:points_ftk/enter_points_pages/type_impression_screen.dart';
 import 'package:points_ftk/enter_points_pages/type_pressing_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:points_ftk/enter_points_pages/type_shop_screen.dart';
 import 'dart:async';
 
 import 'package:points_ftk/enter_points_pages/type_transfert_screen.dart';
@@ -13,7 +14,6 @@ class EnterScreen extends StatefulWidget {
 }
 
 class EnterPointView extends State<EnterScreen> {
-
   late DateTime now;
   late Timer timer;
 
@@ -41,12 +41,10 @@ class EnterPointView extends State<EnterScreen> {
         child: Column(
           children: [
             SizedBox(height: 29.0),
-            Text("Entrer le point du ${now.day}/${now.month}/${now.year} pour la catégorie :",
-              style:TextStyle(
-                fontSize: 37,
-                fontWeight: FontWeight.bold,
-                  ),
-                ),
+            Text(
+              "Entrer le point du ${now.day}/${now.month}/${now.year} pour la catégorie :",
+              style: TextStyle(fontSize: 37, fontWeight: FontWeight.bold),
+            ),
             SizedBox(height: 65.0),
             TypingSections(),
           ],
@@ -72,7 +70,9 @@ class TypingSections extends StatelessWidget {
               GestureDetector(
                 onTap: () {
                   Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => const TypePressing()),
+                    MaterialPageRoute(
+                      builder: (context) => const TypePressing(),
+                    ),
                   );
                 },
                 child: Card(
@@ -88,7 +88,8 @@ class TypingSections extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: const [
                         Icon(
-                          Icons.local_laundry_service, // icône de santé / pression
+                          Icons
+                              .local_laundry_service, // icône de santé / pression
                           size: 50,
                           color: Colors.blue,
                         ),
@@ -146,44 +147,86 @@ class TypingSections extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 60),
-          Center(
-            child: GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => const TypeTransfert()),
-                    );
-                  },
-                  child: Card(
-                    elevation: 4,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Container(
-                      width: 130,
-                      height: 130,
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          Icon(
-                            Icons.currency_exchange, // icône de balance
-                            size: 50,
-                            color: Colors.blue,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => const TypeShop()),
+                  );
+                },
+                child: Card(
+                  elevation: 4,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Container(
+                    width: 130,
+                    height: 130,
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(
+                          Icons.shopping_cart, // icône de santé / pression
+                          size: 50,
+                          color: Colors.blue,
+                        ),
+                        SizedBox(height: 10),
+                        Text(
+                          'SHOP FTK',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black87,
                           ),
-                          SizedBox(height: 10),
-                          Text(
-                            'TRANSFERT',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black87,
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const TypeTransfert(),
+                    ),
+                  );
+                },
+                child: Card(
+                  elevation: 4,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Container(
+                    width: 130,
+                    height: 130,
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(
+                          Icons.currency_exchange, // icône de balance
+                          size: 50,
+                          color: Colors.blue,
+                        ),
+                        SizedBox(height: 10),
+                        Text(
+                          'TRANSFERT',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black87,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -197,9 +240,7 @@ Widget myDialog() {
   return const AlertDialog();
 }
 
-Widget showPictures(
-  String image,
-) {
+Widget showPictures(String image) {
   return Container(
     width: 40.0,
     height: 40.0,

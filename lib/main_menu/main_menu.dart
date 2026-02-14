@@ -1,5 +1,6 @@
 import 'package:points_ftk/main_menu/daily_pressing_screen.dart';
 import 'package:points_ftk/main_menu/daily_print_screen.dart';
+import 'package:points_ftk/main_menu/daily_shop_screen.dart';
 import 'package:points_ftk/main_menu/daily_transfert_screen.dart';
 import 'package:points_ftk/main_menu/enter_points_screen.dart';
 import 'dart:async';
@@ -26,6 +27,7 @@ class MainMenuView extends State<MainMenu> {
     DailyPressingScreen(),
     DailyPrintScreen(),
     DailyTransfertScreen(),
+    DailyShopScreen(),
   ];
 
   late DateTime now;
@@ -50,36 +52,31 @@ class MainMenuView extends State<MainMenu> {
 
   @override
   Widget build(BuildContext context) {
-    return
-        Scaffold(
+    return Scaffold(
       drawer: const MyNavigationDrawer(),
       appBar: AppBar(
         backgroundColor: eclatColor,
-        title: const Center(
-            child: Text('POINTS FTK')),
+        title: const Center(child: Text('POINTS FTK')),
         actions: [
           Padding(
-            padding:EdgeInsets.only(right: 16.0),
-            child: Text("${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}:${now.second.toString().padLeft(2, '0')}",
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-          ),),)
+            padding: EdgeInsets.only(right: 16.0),
+            child: Text(
+              "${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}:${now.second.toString().padLeft(2, '0')}",
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+          ),
         ],
       ),
-      
+
       body: screens[index],
       bottomNavigationBar: NavigationBarTheme(
         data: NavigationBarThemeData(
           indicatorColor: Colors.green,
           labelTextStyle: WidgetStateProperty.all(
-            const TextStyle(
-              fontSize: 14.0,
-              fontWeight: FontWeight.w500,
-            ),
+            const TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500),
           ),
         ),
-        
+
         child: NavigationBar(
           selectedIndex: index,
           onDestinationSelected: (index) => setState(() => this.index = index),
@@ -88,22 +85,20 @@ class MainMenuView extends State<MainMenu> {
               // userr.isDarkMode ? Colors.grey.shade900 : Colors.white,
               Colors.white,
           destinations: const [
-            NavigationDestination(
-              icon: Icon(Icons.edit_note),
-              label: 'Entrer points',
-            ),
+            NavigationDestination(icon: Icon(Icons.edit_note), label: 'Entrer'),
             NavigationDestination(
               icon: Icon(Icons.local_laundry_service),
-              label: 'Points pressing',
+              label: 'Pressing',
             ),
             NavigationDestination(
               icon: Icon(Icons.description),
-              label: 'Points impression',
+              label: 'Printing',
             ),
             NavigationDestination(
               icon: Icon(Icons.transfer_within_a_station),
-              label: 'Points transfert',
+              label: 'Transfert',
             ),
+            NavigationDestination(icon: Icon(Icons.shop), label: 'Shop'),
           ],
         ),
       ),
