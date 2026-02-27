@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:points_ftk/auth_folder/auth_page.dart';
@@ -7,32 +8,43 @@ import 'package:points_ftk/auth_folder/utils.dart';
 import 'package:points_ftk/themes.dart';
 
 //le void main
-Future<void> main() async {
+// Future<void> main() async {
+//   WidgetsFlutterBinding.ensureInitialized();
+
+//   try {
+//       await Firebase.initializeApp(
+//         //name: "points-ftk",
+//         options: const FirebaseOptions(
+//           apiKey: "AIzaSyCvDdkEw07faIC97CQWs3GtFM6pblIaiGY",
+//           authDomain: "points-ftk.firebaseapp.com",
+//           storageBucket: "points-ftk.appspot.com",
+//           appId: "1:842557104070:android:0d007c7a5bfd234213dcc7",
+//           messagingSenderId: "842557104070",
+//           projectId: "points-ftk",
+//         ),
+//       );
+//   } catch (e) {
+//     print("Erreur d'initialisation Firebase: $e");
+//   }
+//     //configLoading();
+//     runApp(MyApp());
+// }
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   try {
-      await Firebase.initializeApp(
-        //name: "points-ftk",
-        options: const FirebaseOptions(
-          apiKey: "AIzaSyCvDdkEw07faIC97CQWs3GtFM6pblIaiGY",
-          authDomain: "points-ftk.firebaseapp.com",
-          storageBucket: "points-ftk.appspot.com",
-          appId: "1:842557104070:android:0d007c7a5bfd234213dcc7",
-          messagingSenderId: "842557104070",
-          projectId: "points-ftk",
-        ),
-      );
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    print("Firebase initialisé avec succès");
   } catch (e) {
     print("Erreur d'initialisation Firebase: $e");
+    // Continue l'exécution même si Firebase échoue
   }
-    //configLoading();
-    runApp(MyApp());
-}
 
-// //le void main
-// Future<void> main() async {
-//   runApp(MyApp());
-// }
+  runApp(MyApp());
+}
 
 // void configLoading() {
 //   EasyLoading.instance
@@ -55,16 +67,16 @@ final navigatorKey = GlobalKey<NavigatorState>();
 //Stateless du MaterialApp
 // ignore: must_be_immutable
 class MyApp extends StatelessWidget {
-
- MyApp({super.key});
+  MyApp({super.key});
   static const String title = "Points FTK";
   Utils utilsInstance = Utils();
 
   @override
   Widget build(BuildContext context) => ThemeProvider(
-        initTheme: MyThemes.lightTheme,
-        child: Builder(
-          builder: (context) => MaterialApp(
+    initTheme: MyThemes.lightTheme,
+    child: Builder(
+      builder:
+          (context) => MaterialApp(
             scaffoldMessengerKey: utilsInstance.messengerKey,
             navigatorKey: navigatorKey,
             debugShowCheckedModeBanner: false,
@@ -73,6 +85,6 @@ class MyApp extends StatelessWidget {
             home: AuthPage(),
             builder: EasyLoading.init(),
           ),
-        ),
-      );
+    ),
+  );
 }
